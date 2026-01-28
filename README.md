@@ -4,13 +4,15 @@ Code for submitted paper: A Contrastive Framework for Enhanced Automatic Attribu
 Evaluation Through Error Generation
 
 In this paper we follow a two-stage methodology to enhance model performances:
- 1- Analysis of Attribution evaluation Error types by examining 3 SOTA models (T5-XXL-True, AlignScore, Qwen3-4B)
- 2- Model Enhancement: 
-    2.1- Synthetic Error Generation 
-    2.2- Model Training through a contrastive objective
 
-## Example Error types
-We provide extended examples of all error types identified in our Prelimaniry analysis:
+1. Analysis of Attribution evaluation Error types by examining 3 SOTA models (T5-XXL-True, AlignScore, Qwen3-4B)
+2. Model Enhancement:
+   - Synthetic Error Generation
+   - Model Training through a contrastive objective
+
+![Methodology](media/pipeline.jpg)
+# Stage 1: 
+We provide extended examples of all error types identified in our Prelimaniry analysis and according to our taxonomy:
 
 | Category | Example |
 | :--- | :--- |
@@ -22,6 +24,20 @@ We provide extended examples of all error types identified in our Prelimaniry an
 | **Fine-grained sensitivity (E5)** | **$s_i$**: At an altitude of 7000 **meters** above sea level, water boils at approximately 92.7°C (198.9°F). <br><br> **$C_i$**: At 7,000 **feet** water boils 92.7C (198.9F). <br><br> **NLI**: 1; **ALIGNSCORE**: 0.91; **Label**: Not Attributable |
 | **Conflicting Sources (E9)** | **$s_i$**: The best selling album of 2017 was Taylor Swift’s "Reputation". [1][2] <br><br> **$C_i$**: [1] Taylor Swift’s "Reputation" was the best selling album of 2017... [2] ...In the US, the album sold 1.216 million copies... making it **the country’s best-selling album**, while globally it was the **second best-selling album** of 2017 worldwide. <br><br> **NLI**: 1; **ALIGNSCORE**: 0.98; **Label**: Not Attributable |
 | **Fact Synthesis (E7)** | **$s_i$**: The first overseas branch of Bible Students was opened in London in 1900, and a German branch office of the Watch Tower Society opened in Elberfeld in 1902. <br><br> **$C_i$**: [1] A German branch office of the Watch Tower Society opened in Elberfeld in 1902. [2] Bible Student missionaries were sent to England in 1881 and the first overseas branch was opened in London in 1900. <br><br> **NLI**: 0; **ALIGNSCORE**: 0.0; **Label**: Attributable |
+
+# Stage 2
+## Synthetic Error Generation
+Different prompts for generating different types of errors can be found in:
+```
+prompts.json
+```
+
+To augment a dataset with generated errors:
+```
+python error_gen/scripts/gen_negative_examples.py --data_file {file}  --prompt_model_name Qwen/Qwen3-30B-A3B-Instruct-2507
+
+```
+
 ## Example Transformations and prompts for Synthetic Data Generation
 
 ## Results
