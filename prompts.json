@@ -1,0 +1,311 @@
+{
+    "gen_prompt":{
+        "from_claim":{
+            "negation":{
+                "system":"Give a negative or a contradicting form of this sentence while maintaining the same formulation of the sentence. If not possible answer with 'Pass'. You should directly provide the modified sentence or 'Pass' without explanation or added comment.",
+                "attribution_label": "change"
+                },
+            "reformulation":{  
+                "system":"Give a full reformulation of this sentence while maintaining the exact same facts mentioned. If not possible answer with 'Pass'. You should directly provide the modified sentence or 'Pass' without explanation or added comment.",
+                "attribution_label": "keep"
+                },
+
+            "erronous_change":{ 
+                "system":"Make a slight change to this sentence to falsify it. Change one important word or two to change the fact. For example replace units by different unequivalent units. If not possible answer with 'Pass'. You should directly provide the modified sentence or 'Pass' without explanation or added comment.",
+                "attribution_label": "change"
+            },
+
+            "infer_claim":{ 
+                "system":"Given a claim, generate a 150-word document from which the claim can be extrapolated or inferred. The document should NOT directly support the claim but should contain information that can help infer it. If not possible answer with 'Pass'. You should directly provide the generated content or 'Pass' without explanation or added comment.",
+                "user":"user_prompt_gen_doc",
+                "attribution_label": "keep" 
+            },
+
+            "over_infer_claim":{ 
+                "system":"Given a claim, generate a 150-word document that is a very vague and general extrapolation of the claim. The document should NOT directly support the claim, mention it or refute it but contain vaguely similar to the given claim. The generated document should be a very vague generalization on the given claim. If not possible answer with 'Pass'. You should directly provide the generated content or 'Pass' without explanation or added comment.",
+                "user":"user_prompt_gen_doc",
+                "attribution_label": "change"
+            },
+
+            "combine_facts":{ 
+                "system":"Given the following sentence, first determine atomic claims made in this sentence. Then for each claim generate a 150-word document that support it. The main content of each document should only tackle one claim and the main topic of the document does not have to be the claim itself. If not possible answer with 'Pass'. You should directly provide the generated documents as a list or 'Pass' without explanation or added comment.",
+                "user":"user_prompt_gen_doc",
+                "attribution_label": "keep"
+            },
+
+            "add_to_the_claim_contradicting_info":{ 
+                "system":"Given a claim, and a supporting document, add to the claim a new information. The added information should be contradicting something in the document. Make sure to keep the claim exactly as it is plus the added information. The added information should be short. If not possible or if the claim or document are too complex answer with 'Pass'. You should directly provide the modified claim or 'Pass' without explanation or added comment.",
+                "user":"user_prompt_modify_sent_with_doc",
+                "attribution_label": "change"
+            },
+            "general_infer":{ 
+                "system":"Given a sentence, generate a new sentence that is vaguely similar to the given sentence. The generated sentence should be a very vague generalization on the given sentence. If not possible or if the claim or document are too complex answer with 'Pass'. You should directly provide the modified claim or 'Pass' without explanation or added comment.",
+                "attribution_label": "change"
+            }
+        },
+        "from_passage":{ 
+            "add_relevant_to_claim":{ 
+                "system":"Given a claim, generate a 150-word a relevant document. The document must be relevant to the very general topic but completely without mention of the claim. Do not mention, support, or refute the claim—just describe the context around it. If not possible or if the claim is too complex answer with 'Pass'. You should directly provide the document or 'Pass' without explanation or added comment.",
+                "user":"user_prompt_gen_doc", 
+                "attribution_label": "keep"
+            },
+            "add_irrelevant_to_claim":{ 
+                "system":"Given a claim, generate a 150-word document containing irrelevant and neutral information. The added information should be genral and neutral to the claim (meaning does NOT mention, support, refute, or contradict it). If not possible or if the claim is too complex answer with 'Pass'. You should directly provide the document or 'Pass' without explanation or added comment.",
+                "user":"user_prompt_gen_doc", 
+                "attribution_label": "keep"
+            }, 
+            "add_contradiction":{
+                "system":"Given a claim, and a supporting document, generate a 100-word new document that contains contradicting information. The information in the document should contradict the claim. If not possible or if the claim or document are too complex answer with 'Pass'. You should directly provide the generated document or 'Pass' without explanation or added comment.",
+                "user":"user_prompt_gen_doc_with_sent",
+                "attribution_label": "change"
+            },
+            "add_conflicting_sources":{ 
+                "system":"Given a claim, and a supporting document, generate a 200-word new document that contains conflicting information regarding the claim. If not possible or if the claim or document are too complex answer with 'Pass'. You should directly provide the generated content or 'Pass' without explanation or added comment.",
+                "user":"user_prompt_gen_doc_with_sent",
+                "attribution_label": "change"
+            }
+        }
+    },
+
+    "fewshot_examples":{
+        "from_claim":{
+            "negation":[
+                {
+                    "query":"",
+                    "sentence":"These barriers, in turn, can affect the volume and distribution of international trade, as well as the composition of exports and imports among countries",
+                    "modified":"These barriers are inaffectual to the volume and distribution of international trade, nor the composition of exports and imports among countries",
+                    "attribution_label": "change",
+                    "prompt_type":"modify_sent"
+                    
+                },
+                {
+                    "query":"",
+                    "sentence":"Lake Victoria has a maximum depth of 80 meters",
+                    "modified":"Lake Victoria has a minimum depth of 80 meters",
+                    "attribution_label": "change",
+                    "prompt_type":"modify_sent"
+                    
+                },
+                {
+                    "query":"",
+                    "sentence":"Pearl beer is no longer in production",
+                    "modified":"Pearl beer is still running in production",
+                    "attribution_label": "change",
+                    "prompt_type":"modify_sent"
+                    
+                }
+
+            ],
+            "reformulation":[],
+            "neutral_change":[
+                {
+                    "query":" ",
+                    "sentence":"they also sell some 7,000 candies from around the world",
+                    "modified":"they also stock some 7,000 candies from around the world",
+                    "attribution_label": "keep",
+                    "prompt_type":"modify_sent"
+                    
+                },
+                {
+                    "query":" ",
+                    "sentence":"Walter Law was born in England.",
+                    "modified":"Walter William Law was born in England..",
+                    "attribution_label": "keep",
+                    "prompt_type":"modify_sent"
+                    
+                }
+
+            ],
+            "erronous_change":[
+                {
+                    "query":" the boiling point of water at 7000 meters above sea level",
+                    "sentence":"at 7,000 feet water boils 92.7C (198.9F).",
+                    "modified":"at 7,000 meters water boils 92.7C (198.9F).",
+                    "attribution_label": "change",
+                    "prompt_type":"modify_sent"
+                    
+                },
+                {
+                    "query":" Song Again by YUI",
+                    "sentence":"The song “Again” by YUI was used as the first opening theme song for the Fullmetal Alchemist: Brotherhood anime series",
+                    "modified":"The song “Again” by Dorcas Cochran was used as the first opening theme song for the Fullmetal Alchemist: Brotherhood anime series",
+                    "attribution_label": "change",
+                    "prompt_type":"modify_sent"
+                },
+                {
+                    "query":"",
+                    "sentence":"they also sell some 7,000 candies from around the world",
+                    "modified":"they also buy some 7,000 candies from around the world",
+                    "attribution_label": "change",
+                    "prompt_type":"modify_sent"
+                },
+                {
+                    "query":"",
+                    "sentence":"Dawn and Tony Orlando sing 'Tie a Yellow Ribbon Around the Old Oak Tree.",
+                    "modified":"Dawn and Tony Orlando wrote 'Tie a Yellow Ribbon Around the Old Oak Tree.",
+                    "attribution_label": "change",
+                    "prompt_type":"modify_sent"
+                },
+                {
+                    "query":" Why people living in equator have dark skin than people far from equator.",
+                    "sentence":"dark-skinned humans now living well north or south of the equator were receiving far less UV light than their equator-living ancestors.",
+                    "modified":"dark-skinned humans now living well north or south of the equator were receiving far less UV light than their equator-living counterparts.",
+                    "attribution_label": "change",
+                    "prompt_type":"modify_sent"
+                }
+                
+            ],
+            "doubtful":[
+                {
+                    "query":"who was the book of first john written to",
+                    "sentence":" The Book of 1 John was likely written between A.D. 85-95.",
+                    "modified":"The book of 1 John was written around A.D. 85-95.",
+                    "attribution_label": "reduce_score", 
+                    "prompt_type":"modify_sent"
+                },
+                {
+                    "query":"",
+                    "sentence": "Some people believe that regulation is necessary to ensure equal treatment of all internet communications.",
+                    "modified":"Regulation is definitely necessary to ensure equal treatment of all internet communications.",
+                    "attribution_label": "reduce_score",
+                    "prompt_type":"modify_sent"
+                },
+                {
+                    "query":" when does the fiscal year begin and end",
+                    "sentence": "the first quarter of the fiscal year 2023 is from October 1, 2022 to December 31, 2022.",
+                    "modified":"Pass",
+                    "attribution_label": "reduce_score",
+                    "prompt_type":"modify_sent"
+                }
+            ],
+            "infer_claim":[],
+
+            "over_infer_claim":[
+                {
+                    "query":"",
+                    "sentence":"Drinking peppermint tea after dinner improves the quality of deep sleep in adults",
+                    "document":"Various botanical infusions have historically been associated with the promotion of physiological balance during periods of rest. As individuals explore different dietary habits to enhance their nightly routines, the integration of natural elements into the evening cycle often reflects a desire for improved physical tranquility. Generally, the consumption of organic derivatives can influence the internal environment, potentially facilitating a more stable state of relaxation as the body transitions into its natural restorative phases.",
+                    "prompt_type":"gen_doc_from_sent"
+                },
+                {
+                    "query":"",
+                    "sentence":"NASA cancelled the Apollo program because of the high financial costs of moon exploration.",
+                    "document":"The cessation of a high-profile aerospace initiative is frequently dictated by the shifting allocation of national fiscal resources and the evolving priorities of governmental oversight. As the economic burden of maintaining complex exploratory ventures increases, administrative bodies must evaluate the long-term viability of continued investment against other competing budgetary demands. The withdrawal of funding for specialized scientific endeavors often reflects a strategic pivot toward more cost-effective or terrestrial objectives. In general, the termination of expansive technological projects is a direct result of the tension between ambitious scientific goals and the pragmatic constraints of a nation's monetary framework.",
+                    "prompt_type":"gen_doc_from_sent"
+                }
+            ],
+            "gen_supporting_doc":[],
+            "general_infer":[],
+            "combine_facts":[
+                {
+                    "query":"",
+                    "sentence":"The first overseas branch of Bible Students was opened in London in 1900, and a German branch office of the Watch Tower Society opened in Elberfeld in 1902.",
+                    "document":["Jehovah's Witnesses were an outgrowth of the International Bible Students. A German branch office of the Watch Tower Society opened in Elberfeld in 1902. By 1933, almost 20,000 Witnesses were counted as active door-to-door preachers, and their annual Memorial service was attracting almost 25,000 people. In Dresden, there were more Bible Students than in New York, where the Watch Tower Society was headquartered.", "Jehovah's Witnesses originated as a branch of the Bible Student movement, which developed in the United States in the 1870s among followers of Christian Restorationist minister Charles Taze Russell. Bible Student missionaries were sent to England in 1881 and the first overseas branch was opened in London in 1900. The group took on the name International Bible Students Association and by 1914 it was also active in Canada, Germany, Australia and other countries. The movement split into several rival organizations after Russell's death."],
+                    "attribution_label": "keep",
+                    "prompt_type":"gen_doc_from_sent"
+                },
+                {
+                    "query":"",
+                    "sentence":"The James Webb Space Telescope, a ten billion dollar orbiting observatory, is capturing and transmitting unprecedented images of the deep universe.",
+                    "document":["The James Webb Space Telescope (JWST) represents the pinnacle of human engineering and international collaboration. As a ten billion dollar billion endeavor led by NASA, with contributions from the ESA and CSA, it is the most complex and powerful space observatory ever built. Launched in late 2021, the JWST was designed to succeed the Hubble Space Telescope, offering significantly increased sensitivity and resolution.", "The operational phase of the James Webb Space Telescope has ushered in a new era of astronomy, characterized by the capture and transmission of data that was previously invisible to human eyes. By utilizing advanced mid-infrared and near-infrared instruments, the telescope can peer through dense clouds of cosmic dust that obscure star-forming regions. This capability allows it to transmit high-definition imagery of 'stellar nurseries' and the intricate structures of distant nebulae with startling clarity."],
+                    "attribution_label": "keep",
+                    "prompt_type":"gen_doc_from_sent"
+                },
+                {
+                    "query":"",
+                    "sentence":"The Colosseum in Rome, a nearly two thousand year-old stone amphitheater, is crumbling and undergoing extensive restoration.",
+                    "document":["The Flavian Amphitheatre, universally known as the Colosseum, stands as the most iconic symbol of Imperial Rome. Completed in 80 AD under the Emperor Titus, this nearly two thousand-year-old structure remains the largest standing amphitheater in the world. Built primarily of travertine limestone, tuff (volcanic rock), and brick-faced concrete, it represents a monumental achievement in Roman engineering. The elliptical design was a departure from the traditional semi-circular Greek theaters, allowing for a massive seating capacity of up to eighty thousand spectators.","Despite its enduring presence, the Colosseum faces a modern battle against time, environmental decay, and structural instability. The crumbling of this ancient monument is a result of nearly two millennia of stressors, ranging from historical lightning strikes and earthquakes to contemporary traffic vibrations and acid rain. The porous travertine stone is particularly susceptible to 'black crusting,' a chemical reaction caused by urban pollution that eats away at the surface and weakens the structural integrity of the outer arches."],
+                    "attribution_label": "keep",
+                    "prompt_type":"gen_doc_from_sent"
+                }
+
+            ],
+            "supporting_irrelevant_content":[
+                {
+                    "query":"",
+                    "sentence":"ESPN won an emmy for the creation of the yellow line.",
+                    "document":"Football is a family of team sports that involve, to varying degrees, kicking a ball to score a goal. Unqualified, the word football is understood to refer to whichever form of football is the most popular in the regional context in which the word appears. Sports commonly called football in certain places include association football ( known as soccer in some countries ) ; gridiron football ( specifically American football or Canadian football ) ; Australian rules football ; rugby football ( either rugby league or rugby union ) ; and Gaelic football. These different variations of football are known as football codes. the University of Iowa's locker room for visiting football teams is completely painted pink. in the 1960's top bowlers made twice as much as top football stars. - That the highest score ever in a football game occurred in 1916 when Georgia Tech defeated Cumberland 222 - 0. ESPN won an emmy for the creation of the superimposed yellow line representing the first down line for American football games. Former Partiots RB BenJarvus Green - Ellis has never fumbled the football in his NFL career.",
+                    "attribution_label": "keep",
+                    "prompt_type":"gen_doc_from_sent"
+                },
+                {
+                    "query":"",
+                    "sentence": "Seismologists can also directly compare the shape of the waves recorded from each test to determine whether they are similar.",
+                    "document": "What earthquake science can tell us about North Korea's nuclear test. There are a number of ways to do this. One is to measure the depth at which the earthquake occurred. Even with modern drilling technology, it is only possible to place a nuclear device a few kilometres below the ground; if an earthquake occurs at a depth of more than 10km, we can be certain it is not a nuclear explosion. Studies of the numerous nuclear tests that took place during the Cold War show that explosions generate larger P waves than S waves when compared with earthquakes. Explosions also generate proportionally smaller Surface waves than P waves. Seismologists can therefore compare the size of the different types of wave to try to determine whether the waves came from an explosion or a natural earthquake. For cases like North Korea, which has carried out a sequence of nuclear tests since 2006, we can directly compare the shape of the waves recorded from each test. As the tests were all conducted at sites within a few kilometres of each other, the waves have a similar shape, differing only in magnitude.",
+                    "attribution_label":"keep",
+                    "prompt_type":"gen_doc_from_sent"
+                }
+
+            ],
+            "unsupporting_relevant_content":[],
+
+            "add_to_the_claim_neutral_info":[
+                {
+                    "query":"",
+                    "sentence": "Elon Musk completed his $44 billion deal to buy Twitter",
+                    "document":"The world’s richest man, Elon Musk, has completed his $44bn (£38.1bn) takeover of Twitter, according to a filing with the US government.",
+                    "modified":"Elon Musk completed his $44 billion deal to buy Twitter on October 27, 2022",
+                    "attribution_label": "reduce_score",
+                    "prompt_type":"modify_sent_with_doc"
+                },
+                {
+                    "query":"",
+                    "sentence": "the U.S. trade deficit increased from $676.7 billion in 2020 to $859.1 billion in 2021",
+                    "document":"The U.S. trade deficit increased from $676.7 billion in 2020 to $859.1 billion in 2021.",
+                    "modified":"According to The Balance, the U.S. trade deficit increased from $676.7 billion in 2020 to $859.1 billion in 2021",
+                    "attribution_label": "reduce_score",
+                    "prompt_type":"modify_sent_with_doc"
+                }
+            ],
+            "add_to_the_claim_contradicting_info":[]
+        },
+        "from_passage":{
+            "add_relevant_to_claim":[
+                {
+                    "query":"",
+                    "sentence":"The use of bio-luminescent fungi in urban lighting reduces the total electricity consumption of municipal street grids.", 
+                    "document":"The study of bio-luminescent organisms involves a deep analysis of the chemical reactions between luciferin and the enzyme luciferase. Within various fungi species, this reaction results in a consistent green glow that emanates from the gills and mycelium. When these fungi are introduced into urban environments, such as public parks or botanical gardens, the primary concern is maintaining a steady supply of decaying organic matter to sustain their growth.",
+                    "prompt_type":"gen_doc_from_sent"
+                }
+
+            ],
+            "add_irrelevant_to_claim":[ 
+                {
+                    "query":"",
+                    "sentence":"ESPN won an emmy for the creation of yellow line", 
+                    "document":"Football is a family of team sports that involve, to varying degrees, kicking a ball to score a goal. Unqualified, the word football is understood to refer to whichever form of football is the most popular in the regional context in which the word appears. Sports commonly called football in certain places include association football ( known as soccer in some countries ) ; gridiron football ( specifically American football or Canadian football ) ; Australian rules football ; rugby football ( either rugby league or rugby union ) ; and Gaelic football. These different variations of football are known as football codes. the University of Iowa's locker room for visiting football teams is completely painted pink. in the 1960's top bowlers made twice as much as top football stars. - That the highest score ever in a football game occurred in 1916 when Georgia Tech defeated Cumberland 222 - 0.", 
+                    "attribution_label": "keep",
+                    "prompt_type":"gen_doc_from_sent"
+                },
+                {
+                    "query":"Why does the President of the United States need to be born in the United States to be eligible to run?",
+                    "sentence": "This means that the President must be born in the United States, or its territories, or on a military base, to parents who were both citizens of the United States.",
+                    "document":"The framers were genuinely afraid of foreign subversion. Among their nightmare scenarios was the prospect of a European noble using his money and influence to sway the Electoral College, take command of the American army, and return the nascent nation to the royalist fold. At the time, several European figures—such as France’s Marquis de Lafayette, a hero of the Revolutionary War—were quite popular in the New World, so the idea wasn’t completely far-fetched.",
+                    "attribution_label": "keep",
+                    "prompt_type":"gen_doc_from_sent"
+                    
+                }
+            ],
+            "add_conflicting_sources":[
+                {
+                    "query":"What’s the population of Tanzania?",
+                    "document":"Tanzania has a current population of 55.57 million people. Current statistics form the World Bank show that in 2011, 49.1 of Tanzanians lived below $1.90 USD per day. This figure is an improvement over 2007’s report indicating a poverty rate of 55.1%. Tanzania has seen annual GDP gains of 7 since 2010 and this economic growth is attributed to this positive trends for poverty alleviation in Tanzania.'",
+                    "sentence":"The population of Tanzania is 55.57 million people.",
+                    "generated_document":"Tanzania is the most populous and vast country in East Africa with a population of 50.1 million people. It is a sparsely populated country with a geographically wide distribution of settlements hence presenting a challenge regarding access to hospitals. With its population and an area of 940,000km, its population density varies from 12 people per km in Lindi to 3,133 people per km in Dar es salaam.. There are 26 administrative regions in the country and the list of hospitals will be arranged by regions",
+                    "attribution_label": "change",
+                    "prompt_type":"gen_doc_with_sent"
+                },
+                {
+                    "query":"",
+                    "document":"Taylor Swift's 'Reputation' was the best selling album of 2017. Singer Ed Sheeran's '÷' is the second best-selling album with 451,000 album-equivalent units, of which 322,000 were pure album sales. Rapper Kendrick Lamar’s fourth studio album, 'Damn', went on to become the third best-seller with 603,000 album-equivalent units in its first week of release (353,000 in pure album sales)",
+                    "sentence":"The best selling album of 2017 was Taylor Swift's 'Reputation'",
+                    "generated_document":"Reputation received generally positive reviews from music critics and reached number one in 13 countries including the United Kingdom, and United States. in the US, the album sold 1.216a0million copies in its first week of release, making it the country's best-selling album of 2017, while with global sales of 4.5a0million copies, it was the second best-selling album of 2017 worldwide.",
+                    "attribution_label": "change",
+                    "prompt_type":"gen_doc_with_sent"
+                        
+                }
+            ],
+            "add_contradiction":[]
+        }
+    }
+}

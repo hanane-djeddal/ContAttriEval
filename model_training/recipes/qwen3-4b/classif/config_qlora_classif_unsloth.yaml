@@ -1,0 +1,108 @@
+model_name_or_path: /lustre/fswork/projects/rech/fiz/udo61qq/.cache/huggingface/hub/models--Qwen--Qwen3-4B/snapshots/1cfa9a7208912126459214e8b04321603b3df60c/ #Qwen/Qwen3-4B
+model_revision: main
+#torch_dtype: bfloat16
+attn_implementation: flash_attention_2
+
+# LoRA arguments
+load_in_4bit: false
+use_peft: true
+lora_r: 16
+lora_alpha: 16
+lora_dropout: 0
+lora_target_modules:
+- lm_head
+- q_proj
+- v_proj
+- o_proj
+- gate_proj
+- up_proj
+- down_proj
+
+# Data training arguments
+chat_template: "{% for message in messages %}\n{% if message['role'] == 'user' %}\n{{ message['content'] + eos_token }}\n{% elif message['role'] == 'system' %}\n{{ message['content'] + eos_token }}\n{% elif message['role'] == 'assistant' %}\n{{ message['content'] + eos_token }}\n{% endif %}\n{% endfor %}"
+dataset_mixture:
+  datasets:
+    - id: hanane/attributionBench_dpo_all
+      config: default
+      split: train_sft            
+      columns:
+        - messages
+      weight: 1.0
+    - id: hanane/attributionBench_dpo_all
+      config: default
+      split: test_sft            
+      columns:
+        - messages
+      weight: 1.0
+  test_split_size: 1000
+  seed: 0
+dataset_num_proc: 12
+local_data_path: /lustre/fswork/projects/rech/fiz/udo61qq/attributionBench_dpo_all
+do_inference: true
+experiment_name: qwen3_4b_attribench_classif_unsloth_2e_trl_ogargs_rdsplit
+
+# SFT trainer config 
+# bf16: true
+# do_eval: true
+# eval_strategy: steps
+# eval_steps: 100
+# gradient_accumulation_steps: 2
+# gradient_checkpointing: true
+# gradient_checkpointing_kwargs:
+#   use_reentrant: false
+# hub_model_id: qwen3_4b_attribench_classif_unsloth_2e_trl
+# hub_strategy: every_save
+# learning_rate: 2.0e-04
+# log_level: info
+# logging_steps: 5  
+# logging_strategy: steps
+# lr_scheduler_type: cosine
+# max_steps: -1
+# num_train_epochs: 4
+# max_seq_length: 4096
+# output_dir: models/qwen3_4b_attribench_classif_unsloth_2e_trl
+# overwrite_output_dir: true
+# per_device_eval_batch_size: 4
+# per_device_train_batch_size: 4
+# push_to_hub: false
+# report_to:
+# - wandb
+# save_strategy: "steps"
+# save_steps: 100
+# save_total_limit: 1
+# seed: 42
+# warmup_ratio: 0.1
+# load_best_model_at_end: true
+
+# SFT trainer config 
+bf16: true
+do_eval: true
+# eval_strategy: steps
+# eval_steps: 100
+eval_strategy: epoch
+gradient_accumulation_steps: 2 
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: false
+hub_model_id: qwen3_4b_attribench_classif_unsloth_2e_trl_ogargs_rdsplit
+hub_strategy: every_save
+learning_rate: 2.0e-04
+log_level: info
+logging_steps: 5  
+logging_strategy: steps
+lr_scheduler_type: cosine
+max_steps: -1
+num_train_epochs: 2
+max_seq_length: 4096
+output_dir: models/qwen3_4b_attribench_classif_unsloth_2e_trl_ogargs_rdsplit
+overwrite_output_dir: true
+per_device_eval_batch_size: 4
+per_device_train_batch_size: 4
+push_to_hub: false
+report_to:
+- tensorboard
+save_strategy: "steps"
+save_steps: 100
+save_total_limit: 1
+seed: 42
+warmup_ratio: 0.1

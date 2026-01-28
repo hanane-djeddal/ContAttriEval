@@ -3,7 +3,11 @@
 Code for submitted paper: A Contrastive Framework for Enhanced Automatic Attribution
 Evaluation Through Error Generation
 
-In this paper we follow a two-stage methodology to enhance model performances
+In this paper we follow a two-stage methodology to enhance model performances:
+ 1- Analysis of Attribution evaluation Error types by examining 3 SOTA models (T5-XXL-True, AlignScore, Qwen3-4B)
+ 2- Model Enhancement: 
+    2.1- Synthetic Error Generation 
+    2.2- Model Training through a contrastive objective
 
 ## Example Error types
 We provide extended examples of all error types identified in our Prelimaniry analysis:

@@ -1,0 +1,79 @@
+# Model arguments attn_implementation: flash_attention_2 --attn_implementation=sdpa
+model_name_or_path: google/t5_xxl_true_nli_mixture
+torch_dtype: bfloat16
+
+
+# LoRA arguments
+# use_peft: true
+# load_in_4bit: true
+# lora_r: 128
+# lora_alpha: 128
+# lora_dropout: 0.05
+# lora_target_modules:
+#   -q
+#   -v
+#   -k
+#   -o
+#   -wi
+#   -wo
+# - q_proj
+# - k_proj
+# - v_proj
+# - o_proj
+# - gate_proj
+# - up_proj
+# - down_proj
+
+# Data training arguments
+
+dataset_mixture:
+  datasets:
+    - id: hanane/attributionBench_augmented_gen_mixedalltrain
+      config: default
+      split: train
+      columns:
+        - chosen
+        - rejected
+      weight: 1.0
+    - id: hanane/attributionBench_augmented_gen_mixedalltrain
+      config: default
+      split: dev
+      columns:
+        - chosen
+        - rejected
+      weight: 1.0
+  seed: 0
+
+dataset_num_proc: 12
+local_data_path: /lustre/fswork/projects/rech/fiz/udo61qq/attributionBench_augmented_gen_mixedalltrain
+
+
+# DPOTrainer arguments
+bf16: true
+beta: 0.01
+do_eval: true
+eval_strategy: steps
+eval_steps: 100
+gradient_accumulation_steps: 4
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: false
+hub_model_id: t5_xxl_true_nli_mixture_aligned_augmentedmixedtraingenbalanced5ep
+learning_rate: 5.0e-6
+log_level: info
+logging_steps: 10
+lr_scheduler_type: cosine
+max_length: 1024
+max_prompt_length: 512
+num_train_epochs: 5
+optim: paged_adamw_32bit
+output_dir: models/t5_xxl_true_nli_mixture_aligned_augmentedmixedtraingenbalanced5ep # It is handy to append `hub_model_revision` to keep track of your local experiments
+per_device_train_batch_size: 4
+per_device_eval_batch_size: 8
+push_to_hub: false
+save_strategy: "steps"
+save_steps: 100
+save_total_limit: 1
+seed: 42
+warmup_ratio: 0.1
+load_best_model_at_end: true
