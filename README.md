@@ -37,6 +37,8 @@ To augment a dataset with generated errors:
 python error_gen/scripts/gen_negative_examples.py --data_file {file}  --prompt_model_name Qwen/Qwen3-30B-A3B-Instruct-2507
 
 ```
+## DATA:
+Augmented Datasets will be made available on huggingFace
 ## Model Training
 
 We repurpose alignement-handbook to implement the training code in model_training
