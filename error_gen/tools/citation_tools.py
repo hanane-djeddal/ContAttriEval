@@ -16,10 +16,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-# os.environ["HTTP_PROXY"] = "http://hacienda:3128"
-# os.environ["HTTPS_PROXY"] = "http://hacienda:3128"
-
-#os.environ['HF_HOME'] = os.environ['WORK'] + '/.cache/huggingface'
 os.environ['HF_HOME'] = os.environ['WORK'] + '/.cache/huggingface'
 
 AUTOAIS = "google/t5_xxl_true_nli_mixture" #"google/t5_xxl_true_nli_mixture"
@@ -35,7 +31,7 @@ def init_alignscore():
     global alignscore
     if alignscore is None:
         logger.info("Loading alignscore model...")
-        alignscore = AlignScore(model='roberta-base', batch_size=32, device="cuda:0", ckpt_path='/home/djeddal/Documents/Code/RAGnRoll/model_ckpnt/AlignScore-large.ckpt', evaluation_mode='nli_sp')
+        alignscore = AlignScore(model='roberta-base', batch_size=32, device="cuda:0", evaluation_mode='nli_sp')
 
 def init_nli_dpo_aligned(model_path):
     global autoais_model, autoais_tokenizer
