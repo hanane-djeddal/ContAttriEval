@@ -31,10 +31,11 @@ Different prompts for generating different types of errors can be found in:
 ```
 prompts.json
 ```
+A sample of the augmented training data with Positives and Negatives can be found in **data/attributionBench_augmentedQwen30B_allerrors_contrastive_extendalltrain_sample.json** The full dataset will be available on HuggingFace soon.
 
 To augment a dataset with generated errors:
 ```
-python error_gen/scripts/gen_negative_examples.py --data_file {file}  --prompt_model_name Qwen/Qwen3-30B-A3B-Instruct-2507
+python error_gen/scripts/gen_negative_examples.py --data_file {file}  --prompt_model_name {Model}
 
 ```
 ## DATA:
