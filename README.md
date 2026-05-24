@@ -27,11 +27,14 @@ We provide extended examples of all error types identified in our Prelimaniry an
 
 # Stage 2
 ## Synthetic Error Generation
+
+A sample of the augmented training data with Positives and Negatives can be found in **data/attributionBench_augmentedQwen30B_allerrors_contrastive_extendalltrain_sample.json** The full dataset will be available on HuggingFace soon.
+
+
 Different prompts for generating different types of errors can be found in:
 ```
 prompts.json
 ```
-A sample of the augmented training data with Positives and Negatives can be found in **data/attributionBench_augmentedQwen30B_allerrors_contrastive_extendalltrain_sample.json** The full dataset will be available on HuggingFace soon.
 
 To augment a dataset with generated errors:
 ```
