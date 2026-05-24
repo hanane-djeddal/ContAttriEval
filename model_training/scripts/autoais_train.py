@@ -1,3 +1,8 @@
+"""
+Code based of the git of the AttributionBenchmark: 
+    https://github.com/OSU-NLP-Group/AttributionBench
+"""
+
 import copy
 import logging
 from dataclasses import dataclass, field
