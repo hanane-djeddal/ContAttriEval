@@ -638,7 +638,7 @@ def main():
 
     parser.add_argument(
         "--prompt_model_name", type=str, default="meta-llama/Llama-3.1-8B-Instruct", help="Model name for generating queries"
-    ) #meta-llama/Llama-3.1-8B-Instruct,  meta-llama/Llama-2-13b-chat-hf
+    ) 
     parser.add_argument(
         "--data_file", type=str, default=None, help="Dataset (.json)", required=True,
     )
@@ -737,8 +737,7 @@ def main():
         logger.info(f"Generating Negative Examples")
         if row["attribution_label"] == "attributable":
              #################### ATTRIBUTABLE both models correct
-            if row["nli_score"]==1 and row["align_score"]>=0.6:
-                row["example_type"]="hard_positive"
+            if row["hard_pos"]:
 
                 ############# NUMERICAL VALUES
                 if args.prompt_type =="all" or args.prompt_type == "numerical_mismatch":
@@ -858,8 +857,7 @@ def main():
                 row["example_type"]="unused"
 
         elif row["attribution_label"] == "not attributable":
-            if row["nli_score"]==0 and row["align_score"]<0.6: ### both models correct
-                row["example_type"]="hard_positive"
+            if row["hard_pos"]:
 
                 all_inputs=[]
                 all_start_tokens=[]
@@ -925,13 +923,6 @@ def main():
         updated_dataset.append(row)
         if len(negative_examples):                                     
             updated_dataset.extend(negative_examples)
-        # if (idx+1) % 80 == 0:
-        #     inter_results_file = "itermediate_" +  str(args.startindex)+results_file #"-"+str(idx)+ results_file
-        #     inter_results_file = os.path.join(inter_results_folder, inter_results_file)
-        #     new_set={"data":updated_dataset, "params":vars(args)}
-        #     logger.info(f"Saving intermediate results to {inter_results_file}")
-        #     with open(inter_results_file, "w") as writer:
-        #         json.dump(new_set, writer)
         if args.stopindex and args.stopindex == idx:
             logger.info(f"Stoping after {args.stopindex - args.startindex + 1} iterartion, index {args.stopindex} finished")
             break
