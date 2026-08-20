@@ -1,4 +1,4 @@
-# ContAttriEval
+# ContAttri: A Contrastive Framework for Enhanced Automatic Attribution Evaluation Through Error Generation
 
 Code for submitted paper: A Contrastive Framework for Enhanced Automatic Attribution
 Evaluation Through Error Generation
